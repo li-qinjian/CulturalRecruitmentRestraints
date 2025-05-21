@@ -35,10 +35,10 @@ public static class RecruitmentCampaignBehaviorPatch
     }
 
     // 招募前置检查：禁止从敌对派系定居点招募
-    public static bool CheckRecruitingPreFix(/*RecruitmentCampaignBehavior __instance, */MobileParty recruitingParty, Settlement targetSettlement)
+    public static bool CheckRecruitingPreFix(MobileParty mobileParty, Settlement settlement)
     {
-        if (recruitingParty.IsLordParty && recruitingParty.LeaderHero != null)
-            return recruitingParty.MapFaction == targetSettlement.MapFaction;   // 仅允许同派系招募
+        if (mobileParty.IsLordParty && mobileParty.LeaderHero != null)
+            return mobileParty.MapFaction == settlement.MapFaction;   // 仅允许同派系招募
 
         return true;
     }

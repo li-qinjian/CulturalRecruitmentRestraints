@@ -8,9 +8,9 @@ namespace CulturalRecruitmentRestraints
     {
         public static MCMSettings? _settings;
 
-        public const string ModuleFolder = "FlavorCraft";
+        public const string ModuleFolder = "CulturalRecruitmentRestraints";
         public const string InstanceID = ModuleFolder;
-        public const string DisplayName = "FlavorCraft";
+        public const string DisplayName = "CulturalRecruitmentRestraints";
         public const string FormatType = "json";
         public const string logPath = @"..\\..\\Modules\\" + ModuleFolder + "\\ModLog.txt";
         public const string ConfigFilePath = @"..\\..\\Modules\\" + ModuleFolder + "\\config.json";

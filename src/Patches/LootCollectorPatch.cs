@@ -21,42 +21,7 @@ namespace CulturalRecruitmentRestraints
             }
             return result;
         }
-
-        //private static bool CanRecruitTroop(PartyBase winnerParty, CharacterObject troop)
-        //{
-          
-        //    CultureObject? winnerCulture = null;
-        //    if (winnerParty.IsMobile && winnerParty.MobileParty != null)
-        //    {
-        //        Hero leaderHero = winnerParty.MobileParty.LeaderHero;
-        //        if (leaderHero != null)
-        //        {
-        //            if (leaderHero.Clan.Kingdom == null)
-        //            {
-        //                return true;   //Independet hero can recruit any troops.
-        //            }
-        //            else if(leaderHero.Clan.Kingdom.Culture != null)
-        //            {
-        //                winnerCulture = leaderHero.Clan.Kingdom.Culture;
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        winnerCulture = winnerParty.Culture;
-        //    }
-
-        //    if (winnerCulture != null && troop.Culture != winnerCulture)
-        //    {
-        //        return false;
-        //        //IM.WriteMessage("文化不符合：" + characterAtIndex.Name.ToString(), IM.MsgType.Notify);
-        //        //continue;
-        //    }
-
-        //    return true;
-        //}
-
-        public static void Postfix(object __instance, TroopRoster memberRoster, PartyBase winnerParty, float lootAmount, MapEvent mapEvent)
+        public static void Postfix(object __instance, TroopRoster memberRoster, PartyBase winnerParty, float lootAmount/*, MapEvent mapEvent*/)
         {
             //LootCollector
             var type = AccessTools.TypeByName("TaleWorlds.CampaignSystem.MapEvents.LootCollector");
@@ -85,9 +50,12 @@ namespace CulturalRecruitmentRestraints
                     CharacterObject characterAtIndex = _LootedPrisoners.GetCharacterAtIndex(j);
                     if (winnerParty.Culture != characterAtIndex.Culture)
                     {
-                        IM.WriteMessage("文化不符合", IM.MsgType.Warning);
-                        IM.WriteMessage(winnerParty.Name.ToString() + "has culture: " + winnerParty.Culture.ToString(), IM.MsgType.Notify);
-                        IM.WriteMessage(characterAtIndex.Name.ToString() + "has culture: " + characterAtIndex.Culture.ToString(), IM.MsgType.Notify);
+                        if (Statics._settings is not null && Statics._settings.LogToFile)
+                        {
+                            IM.WriteMessage("文化不符合", IM.MsgType.Warning);
+                            IM.WriteMessage(winnerParty.Name.ToString() + "has culture: " + winnerParty.Culture.ToString(), IM.MsgType.Notify);
+                            IM.WriteMessage(characterAtIndex.Name.ToString() + "has culture: " + characterAtIndex.Culture.ToString(), IM.MsgType.Notify);
+                        }
                         continue;
                     }
 

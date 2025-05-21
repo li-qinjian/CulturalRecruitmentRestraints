@@ -17,7 +17,7 @@ namespace CulturalRecruitmentRestraints
         /// </summary>
         /// <param name="__result">ref参数：方法返回值</param>
         /// <returns>true=继续执行原方法，false=跳过原方法</returns>
-        public static bool Prefix(/*PlayerTownVisitCampaignBehavior __instance,*/ ref bool __result/*, MenuCallbackArgs args*/)
+        public static bool Prefix(ref bool __result/*, MenuCallbackArgs args*/)
         {
             // 检查玩家是否独立或城镇属于叛军
             bool isPlayerIndependent = Hero.MainHero.Clan.Kingdom == null;
