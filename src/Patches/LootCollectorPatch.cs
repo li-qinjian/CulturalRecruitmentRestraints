@@ -12,7 +12,7 @@ namespace CulturalRecruitmentRestraints
 {
     class LootCollectorPatch
     {
-        public static float GetPartySavePrisonerAsMemberShareProbability(PartyBase winnerParty, float lootAmount)
+        private static float GetPartySavePrisonerAsMemberShareProbability(PartyBase winnerParty, float lootAmount)
         {
             float result = lootAmount;
             if (winnerParty.IsMobile && (winnerParty.MobileParty.IsVillager || winnerParty.MobileParty.IsCaravan || winnerParty.MobileParty.IsMilitia || (winnerParty.MobileParty.IsBandit && winnerParty.MobileParty.CurrentSettlement != null && winnerParty.MobileParty.CurrentSettlement.IsHideout)))
@@ -22,10 +22,42 @@ namespace CulturalRecruitmentRestraints
             return result;
         }
 
+        //private static bool CanRecruitTroop(PartyBase winnerParty, CharacterObject troop)
+        //{
+          
+        //    CultureObject? winnerCulture = null;
+        //    if (winnerParty.IsMobile && winnerParty.MobileParty != null)
+        //    {
+        //        Hero leaderHero = winnerParty.MobileParty.LeaderHero;
+        //        if (leaderHero != null)
+        //        {
+        //            if (leaderHero.Clan.Kingdom == null)
+        //            {
+        //                return true;   //Independet hero can recruit any troops.
+        //            }
+        //            else if(leaderHero.Clan.Kingdom.Culture != null)
+        //            {
+        //                winnerCulture = leaderHero.Clan.Kingdom.Culture;
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        winnerCulture = winnerParty.Culture;
+        //    }
+
+        //    if (winnerCulture != null && troop.Culture != winnerCulture)
+        //    {
+        //        return false;
+        //        //IM.WriteMessage("文化不符合：" + characterAtIndex.Name.ToString(), IM.MsgType.Notify);
+        //        //continue;
+        //    }
+
+        //    return true;
+        //}
+
         public static void Postfix(object __instance, TroopRoster memberRoster, PartyBase winnerParty, float lootAmount, MapEvent mapEvent)
         {
-            //IM.WriteMessage("GiveShareOfLootToParty Postfix", IM.MsgType.Notify);
-
             //LootCollector
             var type = AccessTools.TypeByName("TaleWorlds.CampaignSystem.MapEvents.LootCollector");
             if (type == null)
@@ -38,51 +70,40 @@ namespace CulturalRecruitmentRestraints
 
             float partySavePrisonerAsMemberShareProbability = GetPartySavePrisonerAsMemberShareProbability(winnerParty, lootAmount);
 
-            bool flag = winnerParty == PartyBase.MainParty;
-            bool flag3 = winnerParty.IsMobile && winnerParty.MobileParty.IsGarrison;
-            bool flag7 = winnerParty.IsMobile && winnerParty.MobileParty.IsBandit;
-            int num = (winnerParty.IsMobile ? winnerParty.MobileParty.LimitedPartySize : winnerParty.PartySizeLimit);
+            bool isPlayer = winnerParty == PartyBase.MainParty;
+            bool isGarrison = winnerParty.IsMobile && winnerParty.MobileParty.IsGarrison;
+            bool isBandit = winnerParty.IsMobile && winnerParty.MobileParty.IsBandit;
+            int partySizeLimit = (winnerParty.IsMobile ? winnerParty.MobileParty.LimitedPartySize : winnerParty.PartySizeLimit);
 
             if (partySavePrisonerAsMemberShareProbability > 0f)
             {
                 // 读取属性值
                 TroopRoster _LootedPrisoners = (TroopRoster)prop.GetValue(__instance);
-
-                // 获取胜利方的领袖文化（安全校验版本）
-                CultureObject? winnerCulture = null;
-                if (winnerParty.IsMobile && winnerParty.MobileParty != null)
-                {
-                    Hero leaderHero = winnerParty.MobileParty.LeaderHero;
-                    if (leaderHero != null)
-                    {
-                        winnerCulture = leaderHero.Culture;
-                    }
-                }
-
                 for (int j = _LootedPrisoners.Count - 1; j >= 0; j--)
                 {
                     int elementNumber = _LootedPrisoners.GetElementNumber(j);
                     CharacterObject characterAtIndex = _LootedPrisoners.GetCharacterAtIndex(j);
-
-                    if (winnerCulture != null && characterAtIndex.Culture != winnerCulture)
+                    if (winnerParty.Culture != characterAtIndex.Culture)
                     {
-                        IM.WriteMessage("文化不符合：" + characterAtIndex.Name.ToString(), IM.MsgType.Notify);
+                        IM.WriteMessage("文化不符合", IM.MsgType.Warning);
+                        IM.WriteMessage(winnerParty.Name.ToString() + "has culture: " + winnerParty.Culture.ToString(), IM.MsgType.Notify);
+                        IM.WriteMessage(characterAtIndex.Name.ToString() + "has culture: " + characterAtIndex.Culture.ToString(), IM.MsgType.Notify);
                         continue;
                     }
 
-                    int num2 = 0;
+                    int recruitCnt = 0;
                     for (int k = 0; k < elementNumber; k++)
                     {
-                        bool flag8 = characterAtIndex.IsHero && characterAtIndex.HeroObject.IsReleased;
-                        bool flag9 = flag7 && characterAtIndex.Occupation != Occupation.Bandit;
-                        bool flag10 = flag3 && characterAtIndex.Occupation == Occupation.Bandit;
-                        if (!flag8 && !flag9 && !flag10 && MBRandom.RandomFloat < partySavePrisonerAsMemberShareProbability)
+                        bool flag1 = characterAtIndex.IsHero && characterAtIndex.HeroObject.IsReleased;
+                        bool flag2 = isBandit && characterAtIndex.Occupation != Occupation.Bandit;
+                        bool flag3 = isGarrison && characterAtIndex.Occupation == Occupation.Bandit;
+                        if (!flag1 && !flag2 && !flag3 && MBRandom.RandomFloat < partySavePrisonerAsMemberShareProbability)
                         {
-                            if (!flag && memberRoster.TotalManCount + 1 > num)
+                            if (!isPlayer && memberRoster.TotalManCount + 1 > partySizeLimit)
                             {
                                 break;
                             }
-                            if (characterAtIndex.IsHero && !flag)
+                            if (characterAtIndex.IsHero && !isPlayer)
                             {
                                 EndCaptivityAction.ApplyByReleasedAfterBattle(characterAtIndex.HeroObject);
                             }
@@ -90,12 +111,12 @@ namespace CulturalRecruitmentRestraints
                             {
                                 memberRoster.AddToCounts(characterAtIndex, 1, false, 0, 0, true, -1);
                             }
-                            num2++;
+                            recruitCnt++;
                         }
                     }
-                    if (num2 > 0)
+                    if (recruitCnt > 0)
                     {
-                        _LootedPrisoners.AddToCounts(characterAtIndex, -num2, false, 0, 0, true, -1);
+                        _LootedPrisoners.AddToCounts(characterAtIndex, -recruitCnt, false, 0, 0, true, -1);
                     }
                 }
             }
