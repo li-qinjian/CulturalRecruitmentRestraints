@@ -1,0 +1,42 @@
+﻿using HarmonyLib;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TaleWorlds.CampaignSystem;
+
+namespace CulturalRecruitmentRestraints
+{
+    [HarmonyPatch(typeof(TaleWorlds.CampaignSystem.GameComponents.DefaultVolunteerModel), "GetBasicVolunteer")]
+    public class DefaultVolunteerModelPatch
+    {
+        [HarmonyPrefix]
+        public static bool Prefix(Hero sellerHero, ref CharacterObject __result)
+        {
+            // 检查模组配置是否启用自定义志愿兵规则（CRR）
+            if (Statics._settings is not null && Statics._settings.EnableCRR)
+            {
+                if (sellerHero.IsRuralNotable && sellerHero.CurrentSettlement.Village.Bound.IsCastle)
+                {
+                    // 检查条件：派系为主流文化且与定居点文化一致
+                    CultureObject factionCulture = sellerHero.CurrentSettlement.MapFaction.Culture;
+                    if (factionCulture.IsMainCulture && sellerHero.CurrentSettlement.Culture == factionCulture)
+                    {
+                        // 返回派系文化精英基础兵种
+                        __result = factionCulture.EliteBasicTroop;
+                    }
+                    else
+                    {
+                        __result = sellerHero.Culture.EliteBasicTroop;
+                    }
+                }
+                __result = sellerHero.Culture.BasicTroop;
+
+                return false;
+            }
+
+            return true;
+        }
+    }
+}

@@ -4,7 +4,7 @@
         <tag language="简体中文" />
     </tags>
     <strings>
-        <string id="FlavorCraftModDisplayName" text="风味匠造" />
+        <string id="ModDisplayName" text="C.R.R" />
 
         <string id="PG_Debug" text="调试选项" />
         <string id="Settings_Debug_MSG" text="启用调试" />
@@ -12,10 +12,10 @@
         
         <!-- 杂项 -->
         <string id="PG_Sundry" text="杂项" />
-        <string id="Settings_Sundry_01" text="军需官交易" />
-        <string id="Settings_Sundry_01_Desc" text="交易由军需官进行, 经验由军需官获得 [默认 : false]." />
+        <string id="Settings_Sundry_01" text="文化限制" />
+        <string id="Settings_Sundry_01_Desc" text="限制招募异文化兵种 [默认 : false]." />
 
         <!-- Notify Messages -->
-        <string id="FC_MSG_1" text="额外武器槽已经装备了旗帜，请先移除旗帜在装备武器." />
+        <string id="CRR_MSG_1" text="提示信息." />
     </strings>
 </base>

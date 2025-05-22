@@ -19,6 +19,9 @@ namespace CulturalRecruitmentRestraints
         /// <returns>true=继续执行原方法，false=跳过原方法</returns>
         public static bool Prefix(ref bool __result/*, MenuCallbackArgs args*/)
         {
+            if (Statics._settings is null || !Statics._settings.EnableCRR)
+                return true;
+
             // 检查玩家是否独立或城镇属于叛军
             bool isPlayerIndependent = Hero.MainHero.Clan.Kingdom == null;
             bool isTownRebel = Settlement.CurrentSettlement?.OwnerClan?.Kingdom?.IsRebelClan ?? false;

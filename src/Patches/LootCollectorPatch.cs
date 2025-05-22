@@ -23,6 +23,9 @@ namespace CulturalRecruitmentRestraints
         }
         public static void Postfix(object __instance, TroopRoster memberRoster, PartyBase winnerParty, float lootAmount/*, MapEvent mapEvent*/)
         {
+            if (Statics._settings is null || !Statics._settings.EnableCRR)
+                return;
+
             //LootCollector
             var type = AccessTools.TypeByName("TaleWorlds.CampaignSystem.MapEvents.LootCollector");
             if (type == null)
@@ -48,13 +51,13 @@ namespace CulturalRecruitmentRestraints
                 {
                     int elementNumber = _LootedPrisoners.GetElementNumber(j);
                     CharacterObject characterAtIndex = _LootedPrisoners.GetCharacterAtIndex(j);
-                    if (winnerParty.Culture != characterAtIndex.Culture)
+                    if (winnerParty.MapFaction.IsKingdomFaction && winnerParty.Culture != characterAtIndex.Culture)
                     {
-                        if (Statics._settings is not null && Statics._settings.LogToFile)
+                        //只限制归属于王国的军队
+                        if (Statics._settings is not null && Statics._settings.Debug)
                         {
-                            IM.WriteMessage("文化不符合", IM.MsgType.Warning);
-                            IM.WriteMessage(winnerParty.Name.ToString() + "has culture: " + winnerParty.Culture.ToString(), IM.MsgType.Notify);
-                            IM.WriteMessage(characterAtIndex.Name.ToString() + "has culture: " + characterAtIndex.Culture.ToString(), IM.MsgType.Notify);
+                            string Msg = winnerParty.Name.ToString() + " [" + winnerParty.Culture.ToString() + "] 因文化不同无法招募" + characterAtIndex.Name.ToString() + "[" + characterAtIndex.Culture.ToString() + "]";
+                            IM.WriteMessage(Msg, IM.MsgType.Normal);
                         }
                         continue;
                     }

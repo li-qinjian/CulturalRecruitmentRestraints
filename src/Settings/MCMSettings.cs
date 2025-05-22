@@ -19,7 +19,7 @@ namespace CulturalRecruitmentRestraints.Settings
 #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         private string modName = Statics.DisplayName;
 
-        public override string DisplayName => TextObjectHelper.Create(StringConstants.FlavorCraftModDisplayName + modName + " {VERSION}", new Dictionary<string, TextObject>()
+        public override string DisplayName => TextObjectHelper.Create(StringConstants.ModDisplayName + modName + " {VERSION}", new Dictionary<string, TextObject>()
         {
             { "VERSION", TextObjectHelper.Create(typeof(MCMSettings).Assembly.GetName().Version?.ToString(3) ?? "")! }
         })!.ToString();
@@ -68,7 +68,7 @@ namespace CulturalRecruitmentRestraints.Settings
 
         [SettingPropertyBool(StringConstants.Settings_Sundry_01, Order = 0, RequireRestart = false, HintText = StringConstants.Settings_Sundry_01_Desc)]
         [SettingPropertyGroup(StringConstants.PG_Sundry)]
-        public bool TradingByQuartermaster { get; set; } = false;
+        public bool EnableCRR { get; set; } = false;
 
         #endregion Sundry Options
 
@@ -84,12 +84,12 @@ namespace CulturalRecruitmentRestraints.Settings
 
             yield return new MemorySettingsPreset(Id, "native all off", "Native All Off", () => new MCMSettings
             {
-                TradingByQuartermaster = false,
+                EnableCRR = false,
             }); ;
 
             yield return new MemorySettingsPreset(Id, "native all on", "Native All On", () => new MCMSettings
             {
-                TradingByQuartermaster = true,
+                EnableCRR = true,
             });
         }
 
