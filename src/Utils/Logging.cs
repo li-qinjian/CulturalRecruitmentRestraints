@@ -14,9 +14,9 @@ namespace CulturalRecruitmentRestraints.Utils
                 using StreamWriter sw = File.AppendText(Statics.logPath);
                 sw.WriteLine(PrePrend + " : " + DateTime.Now.ToString() + " : " + message + "\r\n");
             }
-            catch
+            catch (Exception ex)
             {
-
+                IM.ShowError("C.R.R Logging error", "Logging", ex);
             }
         }
 

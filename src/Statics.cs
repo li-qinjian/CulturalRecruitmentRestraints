@@ -10,10 +10,10 @@ namespace CulturalRecruitmentRestraints
 
         public const string ModuleFolder = "CulturalRecruitmentRestraints";
         public const string InstanceID = ModuleFolder;
-        public const string DisplayName = "CulturalRecruitmentRestraints";
+        public const string DisplayName = "C.R.R";
         public const string FormatType = "json";
-        public const string logPath = @"..\\..\\Modules\\" + ModuleFolder + "\\ModLog.txt";
-        public const string ConfigFilePath = @"..\\..\\Modules\\" + ModuleFolder + "\\config.json";
+        public const string logPath = @"..\\..\\Modules\\" + ModuleFolder + "\\CRR_ModLog.txt";
+        public const string ConfigFilePath = @"..\\..\\Modules\\" + ModuleFolder + "\\CRR_config.json";
         public static string PrePrend { get; set; } = DisplayName;
 
         //public const string HarmonyId = ModuleFolder + ".harmony";

@@ -6,14 +6,14 @@
     <strings>
         <string id="ModDisplayName" text="C.R.R" />
 
-        <string id="PG_Debug" text="调试选项" />
-        <string id="Settings_Debug_MSG" text="启用调试" />
-        <string id="Settings_Debug_LOG" text="生成日志" />
+        <string id="CRR_Debug" text="调试选项" />
+        <string id="CRR_Debug_MSG" text="启用调试" />
+        <string id="CRR_Debug_LOG" text="生成日志" />
         
         <!-- 杂项 -->
-        <string id="PG_Sundry" text="杂项" />
-        <string id="Settings_Sundry_01" text="文化限制" />
-        <string id="Settings_Sundry_01_Desc" text="限制招募异文化兵种 [默认 : false]." />
+        <string id="CRR_Sundry" text="杂项" />
+        <string id="CRR_Sundry_01" text="文化限制" />
+        <string id="CRR_Sundry_01_Desc" text="限制招募异文化兵种 [默认 : false]." />
 
         <!-- Notify Messages -->
         <string id="CRR_MSG_1" text="提示信息." />

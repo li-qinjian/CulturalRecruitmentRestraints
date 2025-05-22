@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using CulturalRecruitmentRestraints.Utils;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +22,14 @@ namespace CulturalRecruitmentRestraints
                 {
                     // 检查条件：派系为主流文化且与定居点文化一致
                     CultureObject factionCulture = sellerHero.CurrentSettlement.MapFaction.Culture;
-                    if (factionCulture.IsMainCulture && sellerHero.CurrentSettlement.Culture == factionCulture)
+                    if (factionCulture.IsMainCulture && sellerHero.CurrentSettlement.Culture != factionCulture)
                     {
+                        //if (Statics._settings is not null && Statics._settings.Debug)
+                        //{
+                        //    string Msg = sellerHero.CurrentSettlement.Village.Name.ToString() + "->" + sellerHero.CurrentSettlement.MapFaction.Culture.ToString() + "->" + sellerHero.CurrentSettlement.Owner.MapFaction.Culture.ToString() + "->" + sellerHero.Culture.ToString();
+                        //    IM.WriteMessage(Msg, IM.MsgType.Normal);
+                        //}
+
                         // 返回派系文化精英基础兵种
                         __result = factionCulture.EliteBasicTroop;
                     }
@@ -30,9 +37,10 @@ namespace CulturalRecruitmentRestraints
                     {
                         __result = sellerHero.Culture.EliteBasicTroop;
                     }
+                    return false;
                 }
-                __result = sellerHero.Culture.BasicTroop;
 
+                __result = sellerHero.Culture.BasicTroop;
                 return false;
             }
 
