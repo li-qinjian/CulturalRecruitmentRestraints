@@ -57,7 +57,7 @@ namespace CulturalRecruitmentRestraints
                         if (Statics._settings is not null && Statics._settings.Debug)
                         {
                             string Msg = winnerParty.Name.ToString() + " [" + winnerParty.Culture.ToString() + "] 因文化不同无法招募" + characterAtIndex.Name.ToString() + "[" + characterAtIndex.Culture.ToString() + "]";
-                            IM.WriteMessage(Msg, IM.MsgType.Normal);
+                            IM.WriteMessage(Msg, IM.MsgType.Normal, Statics._settings.LogToFile);
                         }
                         continue;
                     }

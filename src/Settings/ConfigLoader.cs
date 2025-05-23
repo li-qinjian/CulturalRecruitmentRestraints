@@ -16,11 +16,11 @@ namespace CulturalRecruitmentRestraints.Settings
             {
                 IM.WriteMessage("Failed to load any config provider", IM.MsgType.Warning, true);
             }
-            else
-            {
-                IM.logToFile = Statics._settings.LogToFile;
-                IM.Debug = Statics._settings.Debug;
-            }
+            //else
+            //{
+            //    IM.logToFile = Statics._settings.LogToFile;
+            //    IM.Debug = Statics._settings.Debug;
+            //}
 
             IM.PrePrend = Statics.PrePrend;
             Logging.PrePrend = Statics.PrePrend;

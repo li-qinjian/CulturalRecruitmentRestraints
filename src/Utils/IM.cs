@@ -10,8 +10,8 @@ namespace CulturalRecruitmentRestraints.Utils
 {
     public static class IM
     {
-        public static bool logToFile = false;
-        public static bool Debug = false;
+        //public static bool logToFile = false;
+        //public static bool Debug = false;
         public static string PrePrend = "";
 
         public enum MsgType
